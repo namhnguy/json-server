@@ -49,6 +49,19 @@ const GetEvents = () => {
                 const deleteCloseBtn = document.createElement("button");
                 deleteCloseBtn.classList.add("event-data__right-side__delete-close-btn");
                 deleteCloseBtn.textContent = "DELETE";
+                
+                //Delete Feature
+                deleteCloseBtn.addEventListener('click', () => {
+                    fetch(`http://localhost:3000/events/${element.id}`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Accept: "application/json",
+                        },
+                    })
+                        .then((response) => response.json())
+                        .then((json) => console.log(json));
+                });
 
                 eventItemButtons.appendChild(editSaveBtn);
                 eventItemButtons.appendChild(deleteCloseBtn);
@@ -61,6 +74,7 @@ const GetEvents = () => {
         })
 }
 
+//Add feature
 const addEventButton = document.querySelector(".add-btn__button");
 addEventButton.addEventListener('click', () => {
     const eventItem = document.createElement("div");

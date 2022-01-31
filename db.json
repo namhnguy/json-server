@@ -11,24 +11,6 @@
       "startDate": "1644037200000",
       "endDate": "1644469200000",
       "id": 2
-    },
-    {
-      "eventName": "TEST-3",
-      "startDate": "1641963600000",
-      "endDate": "1642309200000",
-      "id": 3
-    },
-    {
-      "eventName": "test-4",
-      "startDate": "1643587200000",
-      "endDate": "1643673600000",
-      "id": 4
-    },
-    {
-      "eventName": "test-5",
-      "startDate": "1643846400000",
-      "endDate": "1643932800000",
-      "id": 5
     }
   ]
 }
