@@ -13,14 +13,16 @@ const GetEvents = () => {
 
                 const nameInput = document.createElement("input");
                 nameInput.setAttribute('type', 'text');
-                nameInput.setAttribute('id', 'name');
+                nameInput.setAttribute('id', `name-${element.id}`);
                 nameInput.setAttribute('name', 'name');
+                nameInput.setAttribute('disabled', true);
                 nameInput.setAttribute('value', element.eventName);
 
                 const startInput = document.createElement("input");
                 startInput.setAttribute('type', 'date');
-                startInput.setAttribute('id', 'start');
+                startInput.setAttribute('id', `start-${element.id}`);
                 startInput.setAttribute('name', 'start');
+                startInput.setAttribute('disabled', true);
                 const start = new Date();
                 start.setTime(element.startDate);
                 let startDate = start.toISOString().substring(0, 10);
@@ -28,8 +30,9 @@ const GetEvents = () => {
 
                 const endInput = document.createElement("input");
                 endInput.setAttribute('type', 'date');
-                endInput.setAttribute('id', 'end');
+                endInput.setAttribute('id', `end-${element.id}`);
                 endInput.setAttribute('name', 'end');
+                endInput.setAttribute('disabled', true);
                 const end = new Date();
                 end.setTime(element.endDate);
                 let endDate = end.toISOString().substring(0, 10);
@@ -42,6 +45,11 @@ const GetEvents = () => {
                 const eventItemButtons = document.createElement("div");
                 eventItemButtons.classList.add("event-data__right-side");
 
+                const saveBtn = document.createElement("button");
+                saveBtn.classList.add("event-data__right-side__edit-save-btn");
+                saveBtn.textContent = "SAVE";
+                saveBtn.style.display = "none";
+
                 const editSaveBtn = document.createElement("button");
                 editSaveBtn.classList.add("event-data__right-side__edit-save-btn");
                 editSaveBtn.textContent = "EDIT";
@@ -49,7 +57,7 @@ const GetEvents = () => {
                 const deleteCloseBtn = document.createElement("button");
                 deleteCloseBtn.classList.add("event-data__right-side__delete-close-btn");
                 deleteCloseBtn.textContent = "DELETE";
-                
+
                 //Delete Feature
                 deleteCloseBtn.addEventListener('click', () => {
                     fetch(`http://localhost:3000/events/${element.id}`, {
@@ -63,6 +71,42 @@ const GetEvents = () => {
                         .then((json) => console.log(json));
                 });
 
+                //Edit Feature
+                editSaveBtn.addEventListener('click', () => {
+                    const nameField = document.querySelector(`#name-${element.id}`);
+                    const startField = document.querySelector(`#start-${element.id}`);
+                    const endField = document.querySelector(`#end-${element.id}`);
+                    nameField.removeAttribute('disabled');
+                    startField.removeAttribute('disabled');
+                    endField.removeAttribute('disabled');
+                    saveBtn.style.display = "block";
+
+                    saveBtn.addEventListener('click', () => {
+                        if (nameInput.value === "" || startInput.value === "" || endInput.value === "") {
+                            console.log("no input");
+                            return;
+                        }
+                        let start = new Date(startInput.value);
+                        let end = new Date(endInput.value);
+                        fetch(`http://localhost:3000/events/${element.id}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Accept: "application/json",
+                            },
+                            body: JSON.stringify({
+                                eventName: nameInput.value,
+                                startDate: start.getTime().toString(),
+                                endDate: end.getTime().toString(),
+                            }),
+                        })
+                            .then((response) => response.json())
+                            .then((json) => console.log(json));
+                    });
+
+                });
+
+                eventItemButtons.appendChild(saveBtn);
                 eventItemButtons.appendChild(editSaveBtn);
                 eventItemButtons.appendChild(deleteCloseBtn);
 
@@ -70,8 +114,8 @@ const GetEvents = () => {
                 eventItem.appendChild(eventItemButtons);
 
                 eventContainer.appendChild(eventItem);
-            })
-        })
+            });
+        });
 }
 
 //Add feature
@@ -148,7 +192,7 @@ addEventButton.addEventListener('click', () => {
         console.log(event.target);
         let node = deleteCloseBtn;
         node.parentNode.parentNode.parentNode.removeChild(node.parentNode.parentNode);
-    })
-})
+    });
+});
 
 GetEvents();
