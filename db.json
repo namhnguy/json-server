@@ -7,15 +7,15 @@
       "id": 1
     },
     {
-      "eventName": "TEST-2",
-      "startDate": "1644037200000",
-      "endDate": "1644469200000",
+      "eventName": "TEST-4",
+      "startDate": "1644278400000",
+      "endDate": "1644451200000",
       "id": 2
     },
     {
-      "eventName": "TEST-3",
-      "startDate": "1641963600000",
-      "endDate": "1642309200000",
+      "eventName": "test3",
+      "startDate": "1644278400000",
+      "endDate": "1644364800000",
       "id": 3
     }
   ]

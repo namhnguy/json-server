@@ -60,6 +60,8 @@ const GetEvents = () => {
 
                 //Delete Feature
                 deleteCloseBtn.addEventListener('click', () => {
+                    let node = deleteCloseBtn;
+                    node.parentNode.parentNode.parentNode.removeChild(node.parentNode.parentNode);
                     fetch(`http://localhost:3000/events/${element.id}`, {
                         method: "DELETE",
                         headers: {
@@ -67,8 +69,9 @@ const GetEvents = () => {
                             Accept: "application/json",
                         },
                     })
-                        .then((response) => response.json())
-                        .then((json) => console.log(json));
+                    //.then();
+                    //.then();
+
                 });
 
                 //Edit Feature
@@ -86,6 +89,7 @@ const GetEvents = () => {
                             console.log("no input");
                             return;
                         }
+
                         let start = new Date(startInput.value);
                         let end = new Date(endInput.value);
                         fetch(`http://localhost:3000/events/${element.id}`, {
@@ -100,8 +104,14 @@ const GetEvents = () => {
                                 endDate: end.getTime().toString(),
                             }),
                         })
-                            .then((response) => response.json())
-                            .then((json) => console.log(json));
+                            .then(() => {
+                                while (eventContainer.firstChild) {
+                                    eventContainer.removeChild(eventContainer.firstChild);
+                                }
+                            })
+                            .then(() => {
+                                GetEvents();
+                            });
                     });
 
                 });
@@ -184,12 +194,17 @@ addEventButton.addEventListener('click', () => {
                 endDate: end.getTime().toString(),
             }),
         })
-            .then((response) => response.json())
-            .then((json) => console.log(json));
+            .then(() => {
+                while (eventContainer.firstChild) {
+                    eventContainer.removeChild(eventContainer.firstChild);
+                }
+            })
+            .then(() => {
+                GetEvents();
+            });
     });
 
-    deleteCloseBtn.addEventListener('click', (event) => {
-        console.log(event.target);
+    deleteCloseBtn.addEventListener('click', () => {
         let node = deleteCloseBtn;
         node.parentNode.parentNode.parentNode.removeChild(node.parentNode.parentNode);
     });
